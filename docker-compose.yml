@@ -1,0 +1,59 @@
+version: '3'
+services:
+  server:
+    build:
+      args:
+        - PORT=${HTTP_SERVER_PORT}
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - '3000:${HTTP_SERVER_PORT}'
+    container_name: ${APP_NAME}_service
+    working_dir: /home/node/app
+    volumes:
+      - ./server:/home/node/app
+      - /home/node/app/node_modules
+    restart: always
+    links:
+      - db
+    depends_on:
+      - db
+    environment:
+      - APP_VERSION=0.1.2
+      - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:${POSTGRES_PORT}/${POSTGRES_DB}
+      - HTTP_PORT=${HTTP_SERVER_PORT}
+      - API_PATH=/api
+      - PUB_KEY=Cha113nG3r123#
+    networks:
+      - challenge
+
+  db:
+    image: postgres:latest
+    container_name: ${APP_NAME}_db
+    ports:
+      - "5434:5432"
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - ./server/docker-compose/postgres/database.sql:/docker-entrypoint-initdb.d/10-init.sql
+    networks:
+      - challenge
+      
+  vue:
+    build: 
+      context: ./ui
+      dockerfile: Dockerfile
+    ports: 
+      - "8080:${HTTP_PORT}"
+    container_name: ${APP_NAME}_vue
+    volumes: 
+      - ./ui:/app
+      - /app/node_modules
+    networks:
+      - challenge      
+
+networks:
+  challenge:
+    driver: bridge
