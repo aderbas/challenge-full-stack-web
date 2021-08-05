@@ -42,11 +42,11 @@ services:
       - challenge
       
   vue:
-    build: 
+    build:
       context: ./ui
       dockerfile: Dockerfile
     ports: 
-      - "8080:${HTTP_PORT}"
+      - "8000:${HTTP_PORT}"
     container_name: ${APP_NAME}_vue
     volumes: 
       - ./ui:/app
