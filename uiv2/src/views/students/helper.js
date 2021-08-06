@@ -2,7 +2,7 @@
  * Helper functions for the Studens view
  */
 
-import { get } from '../../services/net'
+import { get,put,post } from '../../services/net'
 import { ApiRoutes } from '../../constants/'
 
 /**
@@ -24,4 +24,15 @@ export const getStudent = uuid => new window.Promise((resolve, reject) => {
       .catch(err => reject(err))
   }
   resolve(undefined)
+})
+
+/**
+ * Try save student
+ */
+export const trySave = student => new window.Promise((resolve, reject) => {
+ conts method = post;
+ if(student.student_uuid) method = put;
+ method(ApiRoutes.student, {body: student})
+   .then(res => resolve(res))
+   .catch(err => reject(err))
 })
