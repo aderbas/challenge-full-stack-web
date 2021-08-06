@@ -12,6 +12,11 @@ module.exports = (express) => {
   router.get('/', controller.getAll);
 
   /**
+   * Get by id
+   */
+  router.get('/:id', controller.get);
+
+  /**
    * Save new
    */
   router.post('/', controller.save);

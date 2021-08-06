@@ -1,5 +1,3 @@
-# Dockerfile from https://br.vuejs.org/v2/cookbook/dockerize-vuejs-app.html
-
 FROM node:lts-alpine
 
 RUN npm i -g @vue/cli-service-global

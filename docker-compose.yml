@@ -1,6 +1,6 @@
 version: '3'
 services:
-  server:
+  backend:
     build:
       args:
         - PORT=${HTTP_SERVER_PORT}
@@ -41,15 +41,15 @@ services:
     networks:
       - challenge
       
-  vue:
+  frontend:
     build:
-      context: ./ui
+      context: ./uiv2
       dockerfile: Dockerfile
     ports: 
       - "8000:${HTTP_PORT}"
     container_name: ${APP_NAME}_vue
     volumes: 
-      - ./ui:/app
+      - ./uiv2:/app
       - /app/node_modules
     networks:
       - challenge      

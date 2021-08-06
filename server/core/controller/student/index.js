@@ -19,6 +19,20 @@ module.exports = () => ({
   },
 
   /**
+   * Get By Id
+   */
+  get: async(req,res) => {
+    try{
+      const uuid = req.params.id;
+      const q = "SELECT * FROM challenge_student WHERE student_uuid = $1";
+      const users = await query(q, [uuid]);
+      return res.status(200).send(dataSuccess(users.rows));
+    }catch(err){
+      return res.status(200).send(errorMessage(err.message));
+    }    
+  },
+
+  /**
    * Try to save new Student
    */
   save: async(req,res) => {
