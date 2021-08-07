@@ -38,6 +38,13 @@
   .img-logo {
     max-width: 140px;
   }
+
+  .md-list{
+    border-top: 1px solid #CCC;
+    .md-list-item{
+      border-bottom: 1px solid #CCC;
+    }
+  }
 }
 
 </style>

@@ -37,8 +37,8 @@ module.exports = () => ({
    */
   save: async(req,res) => {
     try{
-      const body = req.body;
-      if(body && body.student_name && body.student_email && body.student_ra && body.student_cpf){
+      const {body} = req;
+      if(body && body.student_name && body.student_ra && body.student_cpf){
         const q = "INSERT INTO challenge_student (student_name,student_email,student_ra,student_cpf) VALUES ($1,$2,$3,$4) RETURNING *";
         const student = await query(q, [
           body.student_name,
@@ -49,7 +49,7 @@ module.exports = () => ({
 
         return res.status(200).send(dataSuccess(student.rows));
       }
-      return res.status(200).send(errorMessage('Required fields are blank'));
+      return res.status(200).send(errorMessage('Campos obrigatórios não podem ficar vazio.'));
     }catch(err){
       return res.status(200).send(errorMessage(err.message));
     }
@@ -60,7 +60,7 @@ module.exports = () => ({
    */
   update: async(req,res) => {
     try{
-      const body = req.body;
+      const {body} = req;
       if(body && body.student_name && body.student_email && body.student_uuid){
         const q = "UPDATE challenge_student SET student_name=$1,student_email=$2 WHERE student_uuid=$3 RETURNING *";
         const student = await query(q, [
@@ -71,7 +71,7 @@ module.exports = () => ({
 
         return res.status(200).send(dataSuccess(student.rows));
       }
-      return res.status(200).send(errorMessage('Required fields are blank'));
+      return res.status(200).send(errorMessage('Campos obrigatórios não podem ficar vazio.'));
     }catch(err){
       return res.status(200).send(errorMessage(err.message));
     }
@@ -85,12 +85,27 @@ module.exports = () => ({
       const student_uuid = req.params.id;
       if(student_uuid){
         // query delete mentionend in: https://stackoverflow.com/a/22546994/704099
-        const q = "WITH deleted AS (DELETE FROM challenge_student WHERE student_uuid=$1 RETURNING *) SELECT count(*) FROM deleted"
+        const q = "WITH deleted AS (DELETE FROM challenge_student WHERE student_uuid=$1 RETURNING *) SELECT count(*) FROM deleted";
         const student = await query(q, [student_uuid]);
         return res.status(200).send(dataSuccess(student.rows));
       }
     }catch(err){
       return res.status(200).send(errorMessage(err.message));
     }
-  }
+  },
+
+  /**
+   * Search
+   */
+  search: async(req,res) => {
+    try{
+      const {body: { term }} = req;
+      const params = [`%${term}%`, `%${term}%`, `%${term}%`];
+      const q = "SELECT * FROM challenge_student WHERE student_name ILIKE $1 OR student_ra ILIKE $2 OR student_cpf ILIKE $3 ORDER BY student_created";
+      const result = await query(q, params);
+      return res.status(200).send(dataSuccess(result.rows));
+    }catch(err){
+      return res.status(200).send(errorMessage(err.message));
+    }
+  },
 })

@@ -27,7 +27,7 @@
       </div>
 
     </md-content>
-    <Toast :showSnackbar="toast.showSnackbar" :message="toast.message"/>
+    <Toast ref="toast"/>
   </div>
 </template>
 
@@ -89,18 +89,10 @@ export default {
       credentials: {
         email: '',
         password: ''
-      },
-      toast: {
-        showSnackbar: false,
-        message: ''
       }
     }
   },
   methods: {
-    toggleToast() {
-      this.toast.showSnackbar = true
-      this.toast.message = "Ocorreu um erro ao tentar logar."
-    },
     auth() {
       this.loading = true;
       tryAuthenticate(this.credentials)
@@ -109,13 +101,11 @@ export default {
             localStorage.setItem("token", result.data.token)
             return this.$router.push({ path: '/app'})
           }
-          this.toggleToast()        
+          this.$refs.toast.toggle("Usuário ou senha inválido(s).")        
           this.loading = false
         })
-        .catch((err) => {
-          console.log(err)
-          this.toast.showSnackbar = true
-          this.toast.message = "Ocorreu um erro ao tentar logar."
+        .catch(() => {
+          this.$refs.toast.toggle("Ocorreu um erro ao tentar logar.")
           this.loading = false
         })
     }

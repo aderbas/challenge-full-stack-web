@@ -29,7 +29,12 @@ module.exports = (express) => {
   /**
    * Remove student
    */
-   router.delete('/:id', controller.delete);   
+   router.delete('/:id', controller.delete);
+
+   /**
+    * Search students
+    */
+   router.post(/^\/search/, controller.search);
   
 
   return router;

@@ -4,5 +4,8 @@
 
 export const ApiRoutes = {
   login: '/user/auth',
-  student: '/student'
+  student: {
+    main: '/student',
+    search: '/student/search'
+  }
 }

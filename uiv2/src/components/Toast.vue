@@ -1,5 +1,5 @@
 <template>
-  <md-snackbar :md-position="position" :md-duration="isInfinity ? Infinity : duration" :md-active.sync="showSnackbar" md-persistent>
+  <md-snackbar md-position="left" :md-active.sync="showSnackbar" md-persistent>
     <span>{{ message }}</span>
   </md-snackbar>
 </template>
@@ -9,12 +9,17 @@
 <script>
 export default {
   name: 'Toast',
-  props: { 
-    showSnackbar: Boolean,
-    position: String,
-    duration: Number,
-    isInfinity: Boolean,
-    message: String
+  data() {
+    return {
+      showSnackbar: false,
+      message: ''
+    }
   },
+  methods: {
+    toggle(message) {
+      this.showSnackbar = true
+      this.message = message
+    }
+  }
 }
 </script>
