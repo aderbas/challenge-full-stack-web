@@ -12,28 +12,33 @@
         </md-field>
       </div>
     </div>
-    <md-table v-model="datasource" md-card md-sort="student_name" md-sort-order="asc">
-      <md-table-row slot="md-table-row" slot-scope="{ item }">
-        <md-table-cell md-label="RA" md-sort-by="student_ra">{{ item.student_ra }}</md-table-cell>
-        <md-table-cell md-label="Nome" md-sort-by="student_name">{{ item.student_name }}</md-table-cell>
-        <md-table-cell md-label="Email" md-sort-by="student_email">{{ item.student_email }}</md-table-cell>
-        <md-table-cell md-label="CPF" md-sort-by="student_cpf">{{ item.student_cpf }}</md-table-cell>
-        <md-table-cell md-label="Ações">
-          <md-button class="md-icon-button" @click="actionEdit(item.student_uuid)">
-            <md-icon>
-              create
-              <md-tooltip md-direction="top">Editar</md-tooltip>
-            </md-icon>
-          </md-button>
-          <md-button class="md-icon-button" @click="actionRemove(item)">
-            <md-icon>
-              delete
-              <md-tooltip md-direction="top">Remover</md-tooltip>
-            </md-icon>
-          </md-button>
-        </md-table-cell>
-      </md-table-row>
-    </md-table>
+    <div v-if="datasource.length > 0">
+      <md-table v-model="datasource" md-card md-sort="student_name" md-sort-order="asc">
+        <md-table-row slot="md-table-row" slot-scope="{ item }">
+          <md-table-cell md-label="RA" md-sort-by="student_ra">{{ item.student_ra }}</md-table-cell>
+          <md-table-cell md-label="Nome" md-sort-by="student_name">{{ item.student_name }}</md-table-cell>
+          <md-table-cell md-label="Email" md-sort-by="student_email">{{ item.student_email }}</md-table-cell>
+          <md-table-cell md-label="CPF" md-sort-by="student_cpf">{{ item.student_cpf }}</md-table-cell>
+          <md-table-cell md-label="Ações">
+            <md-button class="md-icon-button" @click="actionEdit(item.student_uuid)">
+              <md-icon>
+                create
+                <md-tooltip md-direction="top">Editar</md-tooltip>
+              </md-icon>
+            </md-button>
+            <md-button class="md-icon-button" @click="actionRemove(item)">
+              <md-icon>
+                delete
+                <md-tooltip md-direction="top">Remover</md-tooltip>
+              </md-icon>
+            </md-button>
+          </md-table-cell>
+        </md-table-row>
+      </md-table>
+    </div>
+    <div v-else>
+      <h4>Nenhum aluno cadastrado.</h4>
+    </div>
     <md-button class="md-fab" @click="actionNew">
       <md-icon>add</md-icon>
     </md-button>
@@ -88,7 +93,7 @@ export default {
     return {
       datasource: [],
       query: "",
-      selected: undefined
+      selected: undefined,
     }
   },
   created() {

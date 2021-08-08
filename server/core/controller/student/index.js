@@ -1,8 +1,5 @@
 const { errorMessage, dataSuccess} = require('../../util');
 const { query } = require('../../db');
-const JWT = require('jsonwebtoken');
-
-const {PUB_KEY} = process.env;
 
 module.exports = () => ({
   /**

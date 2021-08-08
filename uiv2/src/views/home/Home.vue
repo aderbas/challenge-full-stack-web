@@ -4,6 +4,11 @@
       <span class="md-title">
         Módulo Acadêmico
       </span>
+      <div class="md-toolbar-section-end">
+        <md-button class="md-icon-button" @click="logout">
+          <md-icon>logout</md-icon>
+        </md-button>        
+      </div>
     </md-app-toolbar>
 
     <md-app-drawer md-permanent="full">
@@ -11,13 +16,8 @@
         <img src="@/assets/ga-logo.png" class="img-logo">
       </md-toolbar>
 
-      <md-list>
-        <md-list-item>
-          <span class="md-list-item-text">
-            <router-link :to="{path: '/app/students'}">Alunos</router-link>
-          </span>
-        </md-list-item>
-      </md-list>
+      <LeftMenu />
+
     </md-app-drawer>
 
     <md-app-content>
@@ -38,20 +38,21 @@
   .img-logo {
     max-width: 140px;
   }
-
-  .md-list{
-    border-top: 1px solid #CCC;
-    .md-list-item{
-      border-bottom: 1px solid #CCC;
-    }
-  }
 }
-
 </style>
 
 <script>
-
+import LeftMenu from '../../components/LeftMenu.vue'
 export default {
   name: 'Home',
+  methods: {
+    logout() {
+      localStorage.removeItem('token')
+      return this.$router.push({ path: '/'})
+    }
+  },
+  components: {
+    LeftMenu
+  }
 }
 </script>

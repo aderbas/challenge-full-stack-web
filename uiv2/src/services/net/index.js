@@ -1,7 +1,6 @@
 /**
  * Network utils 
  * @author: Aderbal Nunes <aderbalnunes@gmail.com>
- * @since: 17/02/2020
  */
 const {NODE_ENV} = process.env;
 
